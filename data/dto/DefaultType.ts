@@ -1,4 +1,4 @@
 export interface DefaultType {
-    code: string
+    code?: string
     name: string
 }

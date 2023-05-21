@@ -1,29 +1,21 @@
 import {NextPageWithLayout} from "@/pages/_app";
 import React, {ReactNode} from "react";
 import {Layout} from "@/layouts/Layout";
-import {Spin, Tree} from "antd";
+import {notification} from "antd";
 import client from "@/api/apollo-client";
-import {GET_CONTINENTS} from "@/api/query/continent";
+import {GET_CONTINENTS_WITH_DATA} from "@/api/query/continent";
 import {Continent} from "@/data/dto/Continent";
 import {ContinentsData} from "@/data/dto/ContinentsData";
-import {mapContinentsToTree} from "@/utils/mapContinentsToTree";
+import ContinentsTree from "@/components/ContinentsTree";
 
 interface Props {
     continents?: Continent[]
 }
 
 const GeoPage: NextPageWithLayout<Props> = ({continents}) => {
-    const continentsTreeData = mapContinentsToTree(continents);
 
-    if (!continentsTreeData?.length) {
-        return (
-            <Spin/>
-        )
-    }
     return (
-        <Tree
-            treeData={continentsTreeData}
-        />
+        <ContinentsTree continents={continents}/>
     )
 }
 
@@ -32,14 +24,23 @@ GeoPage.getLayout = (page: ReactNode) => {
 }
 
 export async function getServerSideProps() {
-    const {data} = await client.query<ContinentsData>({
-        query: GET_CONTINENTS
-    })
-    return {
-        props: {
-            continents: data.continents
+
+    return await client.query<ContinentsData>({
+        query: GET_CONTINENTS_WITH_DATA
+    }).then(({data}) => {
+        return {
+            props: {
+                continents: data.continents
+            }
         }
-    }
+    }).catch((e) => {
+        notification.error({message: 'Ошибка при запросе данных ' + e, duration: 3})
+        return {
+            props: []
+        }
+    })
+
+
 }
 
 export default GeoPage;

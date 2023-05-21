@@ -5,16 +5,16 @@ export function mapContinentsToTree(continents: Continent[] | undefined): DataNo
     return continents?.map((continent) => {
         return {
             title: continent.name,
-            key: continent.code,
-            children: continent.countries.map((country): DataNode => {
-                const countryKey = `${continent.code}-${country.code}`
+            key: continent.name,
+            children: continent?.countries?.map((country): DataNode => {
+                const countryKey = `${continent.name}-${country.name}`
                 return {
                     title: country.name,
                     key: countryKey,
-                    children: country.languages.map((language): DataNode => {
+                    children: country?.languages?.map((language): DataNode => {
                         return {
                             title: language.name,
-                            key: `${countryKey}-${language.code}`,
+                            key: `${countryKey}-${language.name}`,
                         }
                     })
                 }
