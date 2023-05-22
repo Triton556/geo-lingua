@@ -1,4 +1,5 @@
 import '@/styles/globals.css';
+import '@/styles/antd.min.css'
 import type {AppProps} from 'next/app';
 import React, {ReactElement, ReactNode} from 'react';
 import {NextPage} from 'next';

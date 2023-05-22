@@ -50,6 +50,28 @@ const LanguageForm: FC<LanguagePageProps> = ({continents, languages}) => {
         },
     });
 
+    const autocompleteHandleChange = (value: string) => {
+        formik.setFieldValue(InputFields.country, value);
+        formik.setFieldValue(InputFields.continent, "");
+        formik.setFieldValue(InputFields.languages, []);
+        setShowDeleteButton(false)
+
+
+        const continent = LocalStorageService.getContinent(value);
+        if (continent) {
+            formik.setFieldValue(InputFields.continent, continent?.name);
+            formik.setFieldValue(InputFields.country, continent?.countries?.[0]?.name);
+            console.log(continent?.countries?.[0]?.languages?.map(value => value.name));
+            formik.setFieldValue(InputFields.languages, continent?.countries?.[0]?.languages?.map(value => value.name));
+            setShowDeleteButton(true)
+        }
+    }
+
+    const handleDeleteCountry = (name: string) => {
+        LocalStorageService.deleteCountry(name)
+        setAddedCountries(prevState => prevState.filter(v => v !== name))
+    }
+
     useLayoutEffect(() => {
         const localStorageKeys = LocalStorageService.getItems();
         console.log(localStorageKeys);
@@ -69,23 +91,7 @@ const LanguageForm: FC<LanguagePageProps> = ({continents, languages}) => {
                                 <AutoComplete
                                     id={InputFields.country}
                                     placeholder={"Название"}
-                                    onChange={(value) => {
-                                        formik.setFieldValue(InputFields.country, value);
-                                        formik.setFieldValue(InputFields.continent, "");
-                                        formik.setFieldValue(InputFields.languages, []);
-                                        setShowDeleteButton(false)
-
-
-                                        const continent = LocalStorageService.getContinent(value);
-                                        if (continent) {
-                                            formik.setFieldValue(InputFields.continent, continent?.name);
-                                            formik.setFieldValue(InputFields.country, continent?.countries?.[0]?.name);
-                                            console.log(continent?.countries?.[0]?.languages?.map(value => value.name));
-                                            formik.setFieldValue(InputFields.languages, continent?.countries?.[0]?.languages?.map(value => value.name));
-                                            setShowDeleteButton(true)
-                                        }
-
-                                    }}
+                                    onChange={autocompleteHandleChange}
                                     value={formik.values?.country === "" ? null : formik.values.country}
                                     options={addedCountries?.map(country => {
                                         return {
@@ -148,12 +154,11 @@ const LanguageForm: FC<LanguagePageProps> = ({continents, languages}) => {
                             Сохранить
                         </Button>
                         {showDeleteButton && (
-                            <Button onClick={() => LocalStorageService.deleteCountry(formik.values.country)} danger>
+                            <Button onClick={() => handleDeleteCountry(formik.values.country)} danger>
                                 Удалить
                             </Button>)}
                     </div>
-
-
+                    
                 </form>
             </Card>
 
