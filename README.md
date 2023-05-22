@@ -1,38 +1,80 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# GeoLingua
 
-## Getting Started
+## Описание
 
-First, run the development server:
+GeoLingua - веб-приложение, которое представляет информацию о континентах, странах и языках в виде дерева.  
+Оно также позволяет создавать новые страны для любого континента и указывать языки, на которых говорят в этих странах.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+### Адаптивность
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Приложение имеет адаптивную вёртску, подстраивается под экран
+Ниже на скриншотах можно увидеть
 
-You can start editing the page by modifying `pages/geoPage.tsx`. The page auto-updates as you edit the file.
+### LocalStorage
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+В данном проекте используется LocalStorage для сохранения информации о новых странах, которые были созданы пользователем через форму на странице FormPage.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+При сабмите формы информация о новой стране (ее название, континент и список языков) сохраняется в LocalStorage. 
+Это позволяет сохранить созданную страну даже после закрытия или обновления страницы веб-приложения.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+При загрузке страницы GeoPage данные о новых странах извлекаются из LocalStorage и добавляются в дерево континентов, стран и языков. 
+Это позволяет пользователям видеть свои созданные страны на странице GeoPage вместе с уже существующими странами, полученными из GraphQL API.
 
-## Learn More
+Также, при открытии формы на FormPage для редактирования уже созданной страны, информация о ней подставляется в поля формы из LocalStorage. 
+Это позволяет пользователям легко редактировать свои созданные страны, не вводя все данные заново.
 
-To learn more about Next.js, take a look at the following resources:
+Кроме того, при удалении созданной страны, она удаляется не только из отображаемого дерева на GeoPage, но и из данных в LocalStorage.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Технологии
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- React + Next.js
+- TypeScript
+- Ant Design
+- Apollo GraphQL
+- CSS Modules
+- Formik
 
-## Deploy on Vercel
+## Использование
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Запуск
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Запустите приложение при помощи pnpm:
+
+pnpm install
+pnpm run start
+
+Перейдите на localhost:3000/geo
+
+## Функциональность
+
+Приложение состоит из двух страниц: GeoPage и FormPage. 
+GeoPage отображает дерево континентов, стран и языков. 
+FormPage предоставляет форму для создания новой страны.
+
+## API
+
+Данные о странах и континентах получены с помощью публичного GraphQL API 
+[https://countries.trevorblades.com/graphql](https://countries.trevorblades.com/graphql).
+
+## Бонусные функции
+
+- Возможность изменения расположения континентов, стран и языков с помощью drag'n'drop.
+
+## Скриншоты
+
+### Десктоп
+
+Дерево континетов-стран-языков  
+![image](https://github.com/Triton556/geo-lingua/assets/43929177/e73c0804-09c2-48fd-944f-57f7eac1b2cb)  
+
+Форма для создания/редактирования пользовательских стран и языков  
+![image](https://github.com/Triton556/geo-lingua/assets/43929177/ea190314-9aa1-45c7-9f03-dc64a4f295db)
+
+### Мобильная версия
+
+Дерево континетов-стран-языков  
+![image](https://github.com/Triton556/geo-lingua/assets/43929177/0b9dd204-7918-41b9-b023-99d234cd2c1a)  
+
+Форма для создания/редактирования пользовательских стран и языков  
+![image](https://github.com/Triton556/geo-lingua/assets/43929177/5b4d3f46-d73f-4a97-841b-32a354383a76)
+
