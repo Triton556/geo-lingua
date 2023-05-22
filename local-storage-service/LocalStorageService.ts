@@ -31,17 +31,13 @@ export class LocalStorageService {
 
     static getContinents = (): Continent[] => {
         const keys = this.getItems()
-        console.log('keys', keys)
         let userContinents: Continent[] = []
 
         for (const key of keys) {
-            console.log(key)
             const continent = this.getContinent(key)
-            console.log(continent)
             if (continent) {
                 userContinents.push(continent)
             }
-            console.log('userContinents', userContinents)
         }
 
         return userContinents;

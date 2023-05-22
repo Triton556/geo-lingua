@@ -23,7 +23,6 @@ const ContinentsTree: FC<Props> = ({continents}) => {
                 addContinents = [...serverContinents, ...userAddedContinents];
             }
         }
-        console.log('addContinents', addContinents)
         return mergeObjectsByName(addContinents);
     }, [serverContinents, userAddedContinents])
 
@@ -34,7 +33,6 @@ const ContinentsTree: FC<Props> = ({continents}) => {
 
     useEffect(() => {
         setUserAddedContinents(LocalStorageService.getContinents());
-        console.log("userContinents", LocalStorageService.getContinents());
     }, []);
 
 

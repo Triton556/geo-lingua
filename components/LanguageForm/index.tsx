@@ -45,7 +45,6 @@ const LanguageForm: FC<LanguagePageProps> = ({continents, languages}) => {
         onSubmit: (values: InputFieldsTypes) => {
             alert(JSON.stringify(values, null, 2));
             LocalStorageService.saveCountry(values.country, mapFormToContinent(values));
-            console.log(values);
             setAddedCountries(LocalStorageService.getItems());
         },
     });
@@ -59,10 +58,12 @@ const LanguageForm: FC<LanguagePageProps> = ({continents, languages}) => {
 
         const continent = LocalStorageService.getContinent(value);
         if (continent) {
+            const country = continent?.countries?.[0]?.name
+            const languages = continent?.countries?.[0]?.languages?.map(value => value.name)
+
             formik.setFieldValue(InputFields.continent, continent?.name);
-            formik.setFieldValue(InputFields.country, continent?.countries?.[0]?.name);
-            console.log(continent?.countries?.[0]?.languages?.map(value => value.name));
-            formik.setFieldValue(InputFields.languages, continent?.countries?.[0]?.languages?.map(value => value.name));
+            formik.setFieldValue(InputFields.country, country);
+            formik.setFieldValue(InputFields.languages, languages);
             setShowDeleteButton(true)
         }
     }
@@ -74,7 +75,6 @@ const LanguageForm: FC<LanguagePageProps> = ({continents, languages}) => {
 
     useLayoutEffect(() => {
         const localStorageKeys = LocalStorageService.getItems();
-        console.log(localStorageKeys);
         if (localStorageKeys?.length) {
             setAddedCountries(localStorageKeys);
         }
@@ -135,7 +135,6 @@ const LanguageForm: FC<LanguagePageProps> = ({continents, languages}) => {
                                 id={InputFields.languages}
                                 placeholder={"Языки"}
                                 onChange={(value) => {
-                                    console.log(value);
                                     formik.setFieldValue(InputFields.languages, value);
                                 }}
                                 value={formik.values.languages}
@@ -158,7 +157,7 @@ const LanguageForm: FC<LanguagePageProps> = ({continents, languages}) => {
                                 Удалить
                             </Button>)}
                     </div>
-                    
+
                 </form>
             </Card>
 
