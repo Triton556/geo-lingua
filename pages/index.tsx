@@ -1,6 +1,10 @@
 import Head from 'next/head';
+import client from "@/api/apollo-client";
+import {ContinentsData} from "@/data/dto/ContinentsData";
+import {GET_CONTINENTS_WITH_DATA} from "@/api/query/continent";
+import {notification} from "antd";
 
-export default function Home() {
+ function Home() {
   return (
       <>
         <Head>
@@ -14,3 +18,16 @@ export default function Home() {
       </>
   );
 }
+
+export async function getServerSideProps() {
+
+    return {
+        redirect: {
+            destination: '/geo',
+            permanent: false,
+        },
+    }
+
+}
+
+export default Home
